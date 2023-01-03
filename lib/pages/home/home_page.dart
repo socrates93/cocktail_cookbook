@@ -1,3 +1,4 @@
+import 'package:cocktail_cookbook/shared/widgets/drink_card.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cocktail_cookbook/shared/widgets/search_input.dart';
@@ -7,6 +8,8 @@ class HomePageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final device = MediaQuery.of(context);
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -20,10 +23,27 @@ class HomePageWidget extends StatelessWidget {
           ),
         ),
         child: SafeArea(
-          child: Column(
-            children: const [
-              SearchInputWidget(),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                const SearchInputWidget(),
+                const SizedBox(height: 60),
+                Expanded(
+                  child: ListView.separated(
+                    itemBuilder: (context, index) => DrinkCardWidget(
+                      height: device.size.height * 0.25,
+                    ),
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 8,
+                    ),
+                    itemCount: 5,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
