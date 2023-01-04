@@ -14,9 +14,9 @@ class DrinkService {
     return DrinkResponseType.fromJson(result).drinks ?? [];
   }
 
-  Future<List<Drink>> getFiltered(String by) async {
-    final result =
-        await drinkRepository.get<Map<String, dynamic>>("/filter.php?a=$by");
+  Future<List<Drink>> getFiltered(String by, {String identifier = 'a'}) async {
+    final result = await drinkRepository
+        .get<Map<String, dynamic>>("/filter.php?$identifier=$by");
 
     if (result == null) return [];
 

@@ -32,7 +32,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     });
   }
 
-  Future fetchData(BuildContext _) async {
+  Future fetchData(BuildContext _, {bool filterByAlcoholic = true}) async {
     try {
       setState(() {
         _isLoadingDrinks = true;
@@ -48,7 +48,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         _categories = await drinkService.getCategories();
       }
 
-      final response = await drinkService.getFiltered(selectedCategory);
+      final response = await drinkService.getFiltered(selectedCategory,
+          identifier: filterByAlcoholic ? 'a' : 'c');
 
       _drinks = response;
       _filteredDrinks = response;
@@ -154,7 +155,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         ),
                                         child: ActionChip(
                                           elevation: 5,
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            setState(() {
+                                              selectedCategory = drink
+                                                  .strCategory!
+                                                  .replaceAll(' ', '_');
+                                            });
+
+                                            fetchData(context,
+                                                filterByAlcoholic: false);
+                                          },
                                           avatar: CircleAvatar(
                                             backgroundColor:
                                                 const Color(0xFF875B9F),
