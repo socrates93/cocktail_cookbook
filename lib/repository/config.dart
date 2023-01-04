@@ -1,15 +1,17 @@
 import 'package:dio/dio.dart';
 
-class DioConfig {
+import 'package:cocktail_cookbook/shared/utils/constants.dart';
+
+class DioClient {
   static late Dio _dio;
 
-  DioConfig() {
+  DioClient() {
     BaseOptions options = BaseOptions(
-      baseUrl: 'https://www.thecocktaildb.com/api/json/v1/1',
+      baseUrl: apiUrl,
     );
 
     _dio = Dio(options);
   }
 
-  static Dio get instance => _dio;
+  Dio get instance => _dio;
 }
