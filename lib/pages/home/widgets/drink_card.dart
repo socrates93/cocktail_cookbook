@@ -18,64 +18,37 @@ class DrinkCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 10,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: InkWell(
-        onTap: () {
-          print(drink.toJson());
-        },
+        onTap: () {},
         child: SizedBox(
           width: width,
           height: height,
-          child: Row(
+          child: Stack(
             children: [
-              Flexible(
-                flex: 1,
-                child: SizedBox(
-                  width: double.maxFinite,
-                  height: double.maxFinite,
-                  child: Image.network(
-                    drink.strDrinkThumb!,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (BuildContext _, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) return child;
-
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    },
-                  ),
+              Positioned.fill(
+                child: Image.network(
+                  drink.strDrinkThumb!,
+                  fit: BoxFit.fill,
                 ),
               ),
-              Flexible(
-                flex: 1,
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
                 child: Container(
-                    width: double.maxFinite,
-                    height: double.maxFinite,
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          drink.strDrink ?? "Unknown Drink",
-                          overflow: TextOverflow.fade,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          drink.strInstructions ?? "No instructions",
-                          maxLines: 5,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    )),
+                  padding: const EdgeInsets.all(10),
+                  color: Colors.black.withOpacity(0.5),
+                  child: Text(
+                    drink.strDrink ?? "",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

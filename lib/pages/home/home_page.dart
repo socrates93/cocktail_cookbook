@@ -134,7 +134,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     .map<Widget>(
                                       (drink) => Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 4),
+                                          horizontal: 4,
+                                        ),
                                         child: ActionChip(
                                           elevation: 5,
                                           onPressed: () {},
@@ -165,7 +166,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   itemCount: _drinks.length,
                                   itemBuilder: (BuildContext _, int index) {
                                     return DrinkCardWidget(
-                                      height: device.size.height * 0.25,
+                                      height: device.size.height * 0.3,
                                       drink: _drinks[index],
                                     );
                                   },
