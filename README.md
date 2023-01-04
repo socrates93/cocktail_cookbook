@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-To run this app, please do the following steps:
+To run this app, please follow these steps:
 
 1. Clone this repository
 2. Open a terminal on the project root
