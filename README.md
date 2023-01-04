@@ -1,16 +1,11 @@
-# cocktail_cookbook
-
-A new Flutter project.
+# Cocktail CookBook
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To run this app, please do the following steps:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone this repository
+2. Install app packages running the command 'flutter pub get'
+3. Open an iOS simulator or Android emulator on your computer
+4. Run the app using the command 'flutter run'
+5. Enjoy the app!
