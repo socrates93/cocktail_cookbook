@@ -22,4 +22,13 @@ class DrinkService {
 
     return DrinkResponseType.fromJson(result).drinks ?? [];
   }
+
+  Future<List<Drink>> getCategories() async {
+    final result =
+        await drinkRepository.get<Map<String, dynamic>>("/list.php?c=list");
+
+    if (result == null) return [];
+
+    return DrinkResponseType.fromJson(result).drinks ?? [];
+  }
 }
