@@ -1,6 +1,7 @@
-import 'package:cocktail_cookbook/shared/widgets/drink_card.dart';
 import 'package:flutter/material.dart';
 
+import 'package:cocktail_cookbook/repository/drink_service.dart';
+import 'package:cocktail_cookbook/shared/widgets/drink_card.dart';
 import 'package:cocktail_cookbook/shared/widgets/search_input.dart';
 
 class HomePageWidget extends StatelessWidget {
@@ -8,6 +9,7 @@ class HomePageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final drinkService = DrinkService();
     final device = MediaQuery.of(context);
 
     return Scaffold(
@@ -30,16 +32,33 @@ class HomePageWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 const SearchInputWidget(),
-                const SizedBox(height: 60),
                 Expanded(
-                  child: ListView.separated(
-                    itemBuilder: (context, index) => DrinkCardWidget(
-                      height: device.size.height * 0.25,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: FutureBuilder(
+                      future: drinkService.getFiltered('Alcoholic'),
+                      builder: (BuildContext _, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.separated(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (BuildContext _, int index) {
+                              return DrinkCardWidget(
+                                height: device.size.height * 0.25,
+                                drink: snapshot.data[index],
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
+                              height: 4,
+                            ),
+                          );
+                        }
+
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
                     ),
-                    separatorBuilder: (context, index) => const SizedBox(
-                      height: 8,
-                    ),
-                    itemCount: 5,
                   ),
                 )
               ],

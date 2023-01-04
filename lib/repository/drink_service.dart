@@ -1,33 +1,25 @@
 import 'package:cocktail_cookbook/shared/classes/drink.dart';
-
+import 'package:cocktail_cookbook/shared/classes/drink_response_type.dart';
 import 'drink_repository.dart';
 
 class DrinkService {
   final DrinkRepository drinkRepository = DrinkRepository();
 
-  DrinkService();
-
-  Future<List<Drink>> getDrinks() async {
-    final result = await drinkRepository.getDrinks();
+  Future<List<Drink>> getById(int id) async {
+    final result =
+        await drinkRepository.get<Map<String, dynamic>>("/lookup.php?i=$id");
 
     if (result == null) return [];
 
-    return result;
+    return DrinkResponseType.fromJson(result).drinks ?? [];
   }
 
-  // Future<Drink> getDrink(int id) async {
-  //   return await drinkRepository.getDrink(id);
-  // }
+  Future<List<Drink>> getFiltered(String by) async {
+    final result =
+        await drinkRepository.get<Map<String, dynamic>>("/filter.php?a=$by");
 
-  // Future<Drink> createDrink(Drink drink) async {
-  //   return await drinkRepository.createDrink(drink);
-  // }
+    if (result == null) return [];
 
-  // Future<Drink> updateDrink(Drink drink) async {
-  //   return await drinkRepository.updateDrink(drink);
-  // }
-
-  // Future<void> deleteDrink(int id) async {
-  //   await drinkRepository.deleteDrink(id);
-  // }
+    return DrinkResponseType.fromJson(result).drinks ?? [];
+  }
 }
