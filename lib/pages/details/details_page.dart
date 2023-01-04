@@ -19,7 +19,7 @@ class _DetailsPageWidgetState extends State<DetailsPageWidget> {
       final measure = jsonDrink['strMeasure$i'];
 
       if (ingredient != null && ingredient.isNotEmpty) {
-        ingredients.add('$ingredient - $measure');
+        ingredients.add('$ingredient - ${measure ?? ''}');
       }
     }
 
