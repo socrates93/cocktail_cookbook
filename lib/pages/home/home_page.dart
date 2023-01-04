@@ -16,10 +16,11 @@ class HomePageWidget extends StatefulWidget {
 
 class _HomePageWidgetState extends State<HomePageWidget> {
   final drinkService = DrinkService();
-  bool _isLoading = false;
+  bool _isLoadingDrinks = false;
   String selectedCategory = 'Alcoholic';
   List<Drink> _categories = [];
   List<Drink> _drinks = [];
+  List<Drink> _filteredDrinks = [];
   final _isSelectedList = [true, false];
 
   @override
@@ -34,7 +35,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   Future fetchData(BuildContext _) async {
     try {
       setState(() {
-        _isLoading = true;
+        _isLoadingDrinks = true;
       });
 
       showDialog(
@@ -47,7 +48,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         _categories = await drinkService.getCategories();
       }
 
-      _drinks = await drinkService.getFiltered(selectedCategory);
+      final response = await drinkService.getFiltered(selectedCategory);
+
+      _drinks = response;
+      _filteredDrinks = response;
 
       Navigator.of(_).pop();
     } catch (e) {
@@ -56,7 +60,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       }
     } finally {
       setState(() {
-        _isLoading = false;
+        _isLoadingDrinks = false;
       });
     }
   }
@@ -117,8 +121,20 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const SearchInputWidget(),
-                _isLoading
+                SearchInputWidget(
+                  onSearch: (searchText) {
+                    setState(() {
+                      _filteredDrinks = _drinks
+                          .where(
+                            (drink) => drink.strDrink!
+                                .toLowerCase()
+                                .contains(searchText.toLowerCase()),
+                          )
+                          .toList();
+                    });
+                  },
+                ),
+                _isLoadingDrinks
                     ? const SizedBox.shrink()
                     : Expanded(
                         flex: 1,
@@ -134,7 +150,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     .map<Widget>(
                                       (drink) => Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 4),
+                                          horizontal: 4,
+                                        ),
                                         child: ActionChip(
                                           elevation: 5,
                                           onPressed: () {},
@@ -162,11 +179,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 8),
                                 child: ListView.separated(
-                                  itemCount: _drinks.length,
+                                  itemCount: _filteredDrinks.length,
                                   itemBuilder: (BuildContext _, int index) {
+                                    final drink = _filteredDrinks[index];
+
                                     return DrinkCardWidget(
-                                      height: device.size.height * 0.25,
-                                      drink: _drinks[index],
+                                      height: device.size.height * 0.3,
+                                      drink: drink,
+                                      onTap: () async {
+                                        final drinkDetails = await drinkService
+                                            .getById(int.parse(drink.idDrink!));
+
+                                        if (drinkDetails.isEmpty) {
+                                          return;
+                                        }
+
+                                        Navigator.pushNamed(
+                                          context,
+                                          'details',
+                                          arguments: drinkDetails[0],
+                                        );
+                                      },
                                     );
                                   },
                                   separatorBuilder: (context, index) =>

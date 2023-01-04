@@ -110,6 +110,7 @@ class Drink {
   String? strImageAttribution;
   String? strCreativeCommonsConfirmed;
   String? dateModified;
+  List<String?>? ingredients = [];
 
   factory Drink.fromJson(Map<String, dynamic> json) => Drink(
         idDrink: json["idDrink"],
