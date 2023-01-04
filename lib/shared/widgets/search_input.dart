@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
 
 class SearchInputWidget extends StatefulWidget {
-  const SearchInputWidget({super.key});
+  final Function(String searchText) onSearch;
+
+  const SearchInputWidget({super.key, required this.onSearch});
 
   @override
   State<SearchInputWidget> createState() => _SearchInputWidgetState();
 }
 
 class _SearchInputWidgetState extends State<SearchInputWidget> {
-  final TextEditingController _controller = TextEditingController();
-
   @override
   void initState() {
     super.initState();
-
-    _controller.addListener(_onChangeListener);
-  }
-
-  void _onChangeListener() {
-    print(_controller.text);
   }
 
   @override
@@ -38,7 +32,9 @@ class _SearchInputWidgetState extends State<SearchInputWidget> {
         ],
       ),
       child: TextField(
-        controller: _controller,
+        onChanged: (searchText) {
+          widget.onSearch(searchText);
+        },
         decoration: const InputDecoration(
           hintText: 'Search',
           prefixIcon: Icon(Icons.search),
@@ -46,11 +42,5 @@ class _SearchInputWidgetState extends State<SearchInputWidget> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }
